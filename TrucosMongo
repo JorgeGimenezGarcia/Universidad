@@ -1,0 +1,31 @@
+Conexion por shell: mongo
+
+Visualización de bases de datos existentes: show dbs
+
+Consultar la base de datos actual: db
+
+Visualizar colecciones de la base de datos actual: show collections.
+
+Formato más legible: db.amigos.find().pretty()
+
+Borrar Documentos: db.collecion.remove({Nombre:"X"})
+
+Borrar la coleccion: db.amigos.drop()
+
+Para realizar un proyect y concatenar:  db.estudiantes.aggregate([{$project : {_id:0, nombreCompleto : {$concat : ["$Nombre"," ","$Apellidos"]}}}])
+
+Para realizar un proyect y además ordenar: db.estudiantes.aggregate([{$project : {nombre:1,edad:1,_id:0}},{$sort : {edad : 1}}])
+
+Para saber si queremos saber los 3 estudiantes mas jovenes: db.estudiantes.aggregate([{$project : {nombre:1,edad:1,_id:0}},{$sort : {edad : 1}},{$limit : 3}])
+
+Contador contador con una condicion y además mostrar: db.estudiantes.aggregate([{$match : {edad : { $lt : 20}}}, {$count : "Estudiantes menores a 20 años"}])
+
+
+
+
+
+Pipeline para poder hacer un contador por alguno de sus parametros.
+ 
+db.zips.aggregate([{$match:{state:"MA"}},{$group:{_id:null,Contador:{$sum:1}}},{$project:{_id:0}}])
+
+

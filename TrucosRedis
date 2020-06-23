@@ -1,0 +1,109 @@
+Para conectarnos por shell: redis-cli 
+Si funciona hay que usar el ping-pong de respuesta.
+
+*Acuerdate que Redis, funciona de forma clave-valor.
+
+*llave es el nombre que queremos usar como clave
+*valor es el valor que queremos darle.
+
+Opciones con set.						-Px: Milisegundos -Ex: Segundos para que se expire una variable.
+- set llave valor //Ahora podríamos aplicar valors como NX, XX, PX, EX.
+							-NX: Asigna el valor solo si la clave no existe
+							-XX: Asigna el valor solo si la clave existe.
+
+-SET y GET múltiples.
+mset llave valor llave valor llave valor
+mget llave llave llave
+
+-Exists: Devuelve 1 si la clave existe, un 0 si no existe. Exists llave
+
+-Del: Elimina una o varias claves.  Del llave llave llave.
+
+--------------------------------------------------------------------------------
+Redis con Listas:
+*lista en estos comandos es el nombre que nosotros deciamos ponerle a nuestra lista.
+*valor en estos comandos es para darle una calificacion al mismo.
+Para crear una lista los podemos hacer con el comando: Lpush lista 
+
+Inserción de datos en lista: PUSH
+-rpush: insertamos por la cola/de la lista.
+-lpush: insertamos por la cabeza/izquierda de la lista.
+-lrange: Devuelve los valores que hay dentro de la lista. Si ponemos : lrange lista 0 -1. (Nos devuelve todos los valores de la lista). 
+
+Obtiene datos de la lista, pero los borra!!!
+-rpop y -lpop.
+
+Recorta la lista: -ltrim linf lsuperior.
+
+Para introducir el valor final de una lista y ponerlo al principio sin perder los datos se usa este comando.
+rpoplpush listaOrigen listaDestino.
+
+-lindex, te devuelve el valor de una posicion especifica de la lista. (Acuerdaté que empiezas a contar desde 0).
+-lset lista valor posicion. Introduces un valor en esa posición y lo sobreescribes si existe un valor ahi.
+-linsert: Inserta un valor antes o despues de un valor especificado. linsert lista BEFORE o AFTER valor valorUltimo.
+-llen:Longuitud de la lista.
+-lrem: Borra el numero n de valores que queramos de esa lista. Si n es negativa, empieza a buscar los valores por la cola y si es positiva empieza por la cabeza
+lrem lista n valor.
+
+-LPUSHX y RPUSHX: Inserta un valor en la lista si existe la clave y es una lista.
+
+--------------------------------------------------------------------------------
+Redis con Tablas Hash:
+*hash es el nombre que le pongamos a nuestra tabla hash.
+
+-hset,hsetnx,hmset: Funcionan igual que las listas de antes. Nx no exists y hmset para insertar multiples en una tabla hash.
+-hget,hmget: Para que devuelva uno o varios valores.
+-hincrby, hincrbyfloat: incrementar un valor de una lista.
+-hdel: Elimina la llave que le pidamos.
+-hexists: Existe si o no
+-hlen: Longuitud de la tabla hash.
+-hstrlen: Devuelve la longuitud de una cadena dentro de una tabla hash. hstrlen hash llave 
+
+Consultas importantes!!
+-hgetall: Devuelve todas las claves valores de una tabla hash consultada.
+-hkeys: Devuelve todas las llaves de una tabla hash
+-hvals: devuelve los valores de una tabla hash.
+
+--------------------------------------------------------------------------------
+Redis con Sets.
+*set nombre del set que creamos para insertar valores.
+*valores nombre para poner los valores
+
+Los sets funcionan similar a las listas pero no tienen un orden "lógico" para poder sacarlos por la cabeza o sacarlos por la cola.
+Además se insertan como strings
+
+-sadd set valor valor valor. Con esto añadimos un valor o varios valores a nuestro set ademas tenemos que saber que ¡comprueba para que sean únicos y que no se repitan!
+-spop: devuelve y elemina un valor aleatorio del set.
+-srandmember: Devuelve un valor random del set pero no lo borra.
+-smembers: Te devuelve todos los valores que tiene el set.
+-sismembers: Te devuelve un 1 si existe el valor y un 0 si no existe.
+-sdiff y sdiffstore: Hace la comprobacion de la resta entre dos sets cualquiera. Pero esto significa que el resultado que dará es los valores que el primer set no tiene en el segundo set.
+-sunion y sunionstore:Hace la union de dos sets y no guarda los valores repetidos. Si queremos que se guarde la operacion usaremos el store.
+-sinter y sinterstore: Hace la intersecion entre dos sets. Es decir, los valores que se repitan en ambos sets se guardaran en otro set o solo se muestraran en otro lado.
+-srem: Elimina un valor de la lista. srem set valor
+-scard: Devuelve la cantidad de valores que hay dentro del set.
+-smove: Mueve un elemento de un set de origen a otro de destino.
+--------------------------------------------------------------------------------
+Redis con Sorted sets.
+*set nombre del set sorted que guardaremos los datos.
+*valor/puntuacion que le daremos a nuestra clave
+*clave es el nombre que le daremos.
+
+Esto funciona igual que un set, pero los valores estan ordenados por un "score". Al igual que esto funciona algo similar a una tabla hash pero esta ordenado de una manera por el valor y la clave sería la puntuación.
+Cuando vamos a guardar estos valores acuerdate de que se pone: ¡¡¡¡¡¡¡valor, clave.!!!!!!
+-zadd: inserta uno o varios valores dentro de un set especifico. zadd set valor clave valor clave
+-zrange: devuelve el subconjunto entre dos indices ordenados de menor a mayor.
+-zrevrange: devuelve el subconjunto entre dos indices pero ordenados de mayor a menor.
+
+-zrangebyscore: Se encarga de crear una lista ordenada creando una condicion del rango y despues podemos poner un limite de valores que necesitamos.
+Caso de duda en el examen mira esta pagina: https://www.w3resource.com/redis/redis-zrangebyscore-key-min-max.php
+-zrangebylex: Se encargaría de hacer una lista tambien ordenada pero comprueba lexicamente haya diferencias.
+
+
+
+
+
+
+
+
+
